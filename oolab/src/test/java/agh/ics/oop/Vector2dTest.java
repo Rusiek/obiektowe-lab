@@ -6,7 +6,8 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Vector2dTest {
+class Vector2dTest
+{
 
     @Test
     void testToStringA()
