@@ -2,7 +2,7 @@ package agh.ics.oop;
 
 public class World
 {
-    //lab 2
+//    //lab 2
 //    public static void main(String[] args)
 //    {
 //        Vector2d position1 = new Vector2d(1,2);
@@ -12,24 +12,24 @@ public class World
 //        System.out.println(position1.add(position2));
 //    }
 
-    //lab 3
-//    public static void main(String[] args)
-//    {
-//        Animal animal = new Animal();
-//        MoveDirection[] move = OptionsParser.parse(args);
-//        System.out.println(animal);
-//        for (MoveDirection direction : move)
-//        {
-//            animal.move(direction);
-//        }
-//        System.out.println(animal.isAt(new Vector2d(4, 2)));
-//    }
-
-    //lab 4
+    // lab 3
     public static void main(String[] args)
     {
-
+        Animal animal = new Animal();
+        MoveDirection[] move = OptionsParser.parse(args);
+        System.out.println(animal);
+        for (MoveDirection direction : move)
+        {
+            animal.move(direction);
+        }
+        System.out.println(animal.isAt(new Vector2d(4, 2)));
     }
+
+//    //lab 4
+//    public static void main(String[] args)
+//    {
+//
+//    }
 
 
     public static Direction[] convert(String[] args)

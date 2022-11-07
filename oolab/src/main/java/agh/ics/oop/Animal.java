@@ -16,7 +16,10 @@ public class Animal
 
     public String toString()
     {
-        return "Zwierzak jest w punkcie: " + this.position.toString() + "\nPatrzy w kierunku: " + this.orientation.toString();
+        return "Zwierzak jest w punkcie: " +
+                this.position.toString() +
+                "\nPatrzy w kierunku: " +
+                this.orientation.toString();
     }
 
     public boolean isAt(Vector2d position)
@@ -24,48 +27,31 @@ public class Animal
         return this.position.equals(position);
     }
 
-    public Animal move(MoveDirection direction)
+    public boolean isOutsideMap(Vector2d position)
     {
         int maxValue = 4;
         int minValue = 0;
+        return position.x > maxValue || position.x < minValue || position.y > maxValue || position.y < minValue;
+    }
+
+    public Animal move(MoveDirection direction)
+    {
         switch (direction)
         {
             case FORWARD ->
             {
-                if (this.position.y < maxValue && this.orientation == MapDirection.NORTH)
+                this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
+                if (this.isOutsideMap(this.position))
                 {
-                    this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-                else if (this.position.x < maxValue && this.orientation == MapDirection.EAST)
-                {
-                    this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-                else if (this.position.y > minValue && this.orientation == MapDirection.SOUTH)
-                {
-                    this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-                else if (this.position.x > minValue && this.orientation == MapDirection.WEST)
-                {
-                    this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
+                    this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
                 }
             }
             case BACKWARD ->
             {
-                if (this.position.y < maxValue && this.orientation == MapDirection.SOUTH)
+                this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
+                if (this.isOutsideMap(this.position))
                 {
-                    this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-                else if (this.position.x < maxValue && this.orientation == MapDirection.WEST)
-                {
-                    this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-                else if (this.position.y > minValue && this.orientation == MapDirection.NORTH)
-                {
-                    this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-                else if (this.position.x > minValue && this.orientation == MapDirection.EAST)
-                {
-                    this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
+                    this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
                 }
             }
             case RIGHT -> this.orientation = this.orientation.next();

@@ -122,7 +122,6 @@ class WorldTest
         assertEquals("Zwierzak skręca w lewo", StorePrintStream.printList.get(2));
         assertEquals("Zwierzak skręca w prawo", StorePrintStream.printList.get(3));
         assertEquals("Nieznany kierunek", StorePrintStream.printList.get(4));
-
     }
 
 }
