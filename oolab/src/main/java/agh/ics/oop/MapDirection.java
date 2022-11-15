@@ -1,93 +1,51 @@
 package agh.ics.oop;
 
-public enum MapDirection {
+public enum MapDirection
+{
     NORTH,
     SOUTH,
     WEST,
     EAST,
     UNKOWN;
 
-    public String toString() {
-        switch (this) {
-            case NORTH -> {
-                return "Północ";
-            }
-            case SOUTH -> {
-                return "Południe";
-            }
-            case WEST -> {
-                return "Zachód";
-            }
-            case EAST -> {
-                return "Wschód";
-            }
-            case UNKOWN -> {
-                return "Nieznany";
-            }
-        }
-        return null;
+    public String toString()
+    {
+        return switch (this)
+        {
+            case NORTH -> "Północ";
+            case SOUTH -> "Południe";
+            case WEST -> "Zachód";
+            case EAST -> "Wschód";
+            case UNKOWN -> "Nieznany";
+        };
     }
 
-    public MapDirection next() {
-        switch (this) {
-            case NORTH -> {
-                return EAST;
-            }
-            case SOUTH -> {
-                return WEST;
-            }
-            case WEST -> {
-                return NORTH;
-            }
-            case EAST -> {
-                return SOUTH;
-            }
-            case UNKOWN -> {
-                return UNKOWN;
-            }
-        }
-        return null;
+    public MapDirection next()
+    {
+        return switch (this)
+        {
+            case NORTH -> EAST;
+            case SOUTH -> WEST;
+            case WEST -> NORTH;
+            case EAST -> SOUTH;
+            case UNKOWN -> UNKOWN;
+        };
     }
 
-    public MapDirection previous() {
-        switch (this) {
-            case NORTH -> {
-                return WEST;
-            }
-            case SOUTH -> {
-                return EAST;
-            }
-            case WEST -> {
-                return SOUTH;
-            }
-            case EAST -> {
-                return NORTH;
-            }
-            case UNKOWN -> {
-                return UNKOWN;
-            }
-        }
-        return null;
+    public MapDirection previous()
+    {
+        return this.next().next().next();
     }
 
-    public Vector2d toUnitVector() {
-        switch (this) {
-            case NORTH -> {
-                return new Vector2d(0, 1);
-            }
-            case SOUTH -> {
-                return new Vector2d(0, -1);
-            }
-            case WEST -> {
-                return new Vector2d(-1, 0);
-            }
-            case EAST -> {
-                return new Vector2d(1, 0);
-            }
-            case UNKOWN -> {
-                return new Vector2d(0, 0);
-            }
-        }
-        return null;
+    public Vector2d toUnitVector()
+    {
+        return switch (this)
+        {
+            case NORTH -> new Vector2d(0, 1);
+            case SOUTH -> new Vector2d(0, -1);
+            case WEST -> new Vector2d(-1, 0);
+            case EAST -> new Vector2d(1, 0);
+            case UNKOWN -> new Vector2d(0, 0);
+        };
     }
 }

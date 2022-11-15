@@ -63,6 +63,6 @@ public class Vector2d {
     @Override
     public int hashCode()
     {
-        return ((int)(213742069 * (long)x + (long)y));
+        return ((int)(42069 * (long)x + (long)y));
     }
 }

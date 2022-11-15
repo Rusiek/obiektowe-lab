@@ -16,7 +16,8 @@ public class MapVisualizer {
      * Initializes the MapVisualizer with an instance of map to visualize.
      * @param map
      */
-    public MapVisualizer(IWorldMap map) {
+    public MapVisualizer(IWorldMap map)
+    {
         this.map = map;
     }
 
@@ -29,56 +30,80 @@ public class MapVisualizer {
      * @param upperRight The upper right corner of the region that is drawn.
      * @return String representation of the selected region of the map.
      */
-    public String draw(Vector2d lowerLeft, Vector2d upperRight) {
+    public String draw(Vector2d lowerLeft, Vector2d upperRight)
+    {
         StringBuilder builder = new StringBuilder();
-        for (int i = upperRight.y + 1; i >= lowerLeft.y - 1; i--) {
-            if (i == upperRight.y + 1) {
+        builder.append("<html>");
+        for (int i = upperRight.y + 1; i >= lowerLeft.y - 1; i--)
+        {
+            if (i == upperRight.y + 1)
+            {
                 builder.append(drawHeader(lowerLeft, upperRight));
+                builder.append("<br>");
             }
             builder.append(String.format("%3d: ", i));
-            for (int j = lowerLeft.x; j <= upperRight.x + 1; j++) {
-                if (i < lowerLeft.y || i > upperRight.y) {
+            for (int j = lowerLeft.x; j <= upperRight.x + 1; j++)
+            {
+                if (i < lowerLeft.y || i > upperRight.y)
+                {
                     builder.append(drawFrame(j <= upperRight.x));
-                } else {
+                }
+                else
+                {
                     builder.append(CELL_SEGMENT);
-                    if (j <= upperRight.x) {
+                    if (j <= upperRight.x)
+                    {
                         builder.append(drawObject(new Vector2d(j, i)));
                     }
                 }
             }
             builder.append(System.lineSeparator());
+            builder.append("<br>");
         }
-        return builder.toString();
+        return builder.toString() + "</html>";
     }
 
-    private String drawFrame(boolean innerSegment) {
-        if (innerSegment) {
+    private String drawFrame(boolean innerSegment)
+    {
+        if (innerSegment)
+        {
             return FRAME_SEGMENT + FRAME_SEGMENT;
-        } else {
+        }
+        else
+        {
             return FRAME_SEGMENT;
         }
     }
 
-    private String drawHeader(Vector2d lowerLeft, Vector2d upperRight) {
+    private String drawHeader(Vector2d lowerLeft, Vector2d upperRight)
+    {
         StringBuilder builder = new StringBuilder();
-        builder.append(" y\\x ");
-        for (int j = lowerLeft.x; j < upperRight.x + 1; j++) {
+        builder.append("y\\x ");
+        for (int j = lowerLeft.x; j < upperRight.x + 1; j++)
+        {
             builder.append(String.format("%2d", j));
         }
         builder.append(System.lineSeparator());
         return builder.toString();
     }
 
-    private String drawObject(Vector2d currentPosition) {
+    private String drawObject(Vector2d currentPosition)
+    {
         String result = null;
-        if (this.map.isOccupied(currentPosition)) {
+        if (this.map.isOccupied(currentPosition))
+        {
             Object object = this.map.objectAt(currentPosition);
-            if (object != null) {
+            if (object != null)
+            {
                 result = object.toString();
-            } else {
+            }
+            else
+            {
                 result = EMPTY_CELL;
             }
-        } else {
+        }
+        else
+        {
             result = EMPTY_CELL;
         }
         return result;

@@ -1,64 +1,71 @@
 package agh.ics.oop;
 
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class Animal
 {
-    private MapDirection orientation;
-    private Vector2d position;
+    private MapDirection orientation = MapDirection.NORTH;
+    private Vector2d position = new Vector2d(0,0);
+    private IWorldMap map;
 
-    public Animal()
+
+    public Animal() { }
+
+    public Animal(IWorldMap map)
     {
-        this.orientation = MapDirection.NORTH;
-        int startValue = 2;
-        this.position = new Vector2d(startValue, startValue);
+        this.map = map;
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition)
+    {
+        this.map = map;
+        this.position = initialPosition;
     }
 
     public String toString()
     {
-        return "Zwierzak jest w punkcie: " +
-                this.position.toString() +
-                "\nPatrzy w kierunku: " +
-                this.orientation.toString();
+        return switch (orientation)
+        {
+            case NORTH -> "^";
+            case EAST -> ">";
+            case SOUTH -> "v";
+            case WEST -> "<";
+            default -> "?";
+        };
     }
 
     public boolean isAt(Vector2d position)
     {
-        return this.position.equals(position);
+        return position.equals(position);
     }
 
-    public boolean isOutsideMap(Vector2d position)
+    public Vector2d getPosition()
     {
-        int maxValue = 4;
-        int minValue = 0;
-        return position.x > maxValue || position.x < minValue || position.y > maxValue || position.y < minValue;
+        return position;
     }
 
     public Animal move(MoveDirection direction)
     {
         switch (direction)
         {
-            case FORWARD ->
+            case RIGHT -> orientation = orientation.next();
+            case LEFT -> orientation = orientation.previous();
+            case FORWARD, BACKWARD ->
             {
-                this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
-                if (this.isOutsideMap(this.position))
+                Vector2d newMove = orientation.toUnitVector();
+                if (direction == MoveDirection.BACKWARD)
                 {
-                    this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
+                    newMove = newMove.opposite();
                 }
-            }
-            case BACKWARD ->
-            {
-                this.position = this.position.subtract(Objects.requireNonNull(this.orientation.toUnitVector()));
-                if (this.isOutsideMap(this.position))
-                {
-                    this.position = this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
-                }
-            }
-            case RIGHT -> this.orientation = this.orientation.next();
-            case LEFT -> this.orientation = this.orientation.previous();
-            case UNKNOWN -> {}
-        }
 
+                Vector2d newPosition = position.add(newMove);
+
+                if (map.canMoveTo(newPosition))
+                {
+                    position = newPosition;
+                }
+            }
+        }
         return this;
     }
 }
