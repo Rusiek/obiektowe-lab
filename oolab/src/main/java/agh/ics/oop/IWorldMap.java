@@ -1,8 +1,5 @@
 package agh.ics.oop;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 /**
  * The interface responsible for interacting with the map of the world.
  * Assumes that Vector2d and MoveDirection classes are defined.
@@ -24,9 +21,7 @@ public interface IWorldMap
     /**
      * Place a animal on the map.
      *
-     * @param animal
-     *            The animal to place on the map.
-     * @return True if the animal was placed. The animal cannot be placed if the map is already occupied.
+     * @param animal The animal to place on the map.
      */
     boolean place(Animal animal);
 

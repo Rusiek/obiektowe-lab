@@ -5,11 +5,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class JFrameWindow extends JFrame {
-    public JFrameWindow(String[] args) {
+public class JFrameWindow extends JFrame
+{
+    public JFrameWindow(String[] args)
+    {
         super("JFrameWindow");
         java.util.List<MoveDirection> directions = new OptionsParser().parse(args);
-        IWorldMap map = new RectangularMap(10, 5);
+        AbstractWorldMap map = new GrassField(10);
         java.util.List<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(2, 2), new Vector2d(3, 4)));
         IEngine engine = new SimulationEngine(directions, map, positions);
         ArrayList<String> Frames = (ArrayList<String>) engine.run();
@@ -22,17 +24,17 @@ public class JFrameWindow extends JFrame {
             JLabel newLabel = new JLabel(frame, SwingConstants.CENTER);
             this.add(newLabel);
             // Wait for 1 second before adding the next frame
-            try {
+            try
+            {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 e.printStackTrace();
             }
             // Delete last frame
             this.remove(newLabel);
         }
-
-
-
     }
 
     public static void main(String[] args)

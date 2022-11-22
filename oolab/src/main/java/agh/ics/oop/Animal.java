@@ -1,50 +1,30 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-
-public class Animal
+public class Animal extends AbstractWorldMapElement
 {
     private MapDirection orientation = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(0,0);
-    private IWorldMap map;
+    private final AbstractWorldMap map;
 
-
-    public Animal() { }
-
-    public Animal(IWorldMap map)
-    {
-        this.map = map;
-    }
-
-    public Animal(IWorldMap map, Vector2d initialPosition)
+    public Animal(AbstractWorldMap map, Vector2d initialPosition)
     {
         this.map = map;
         this.position = initialPosition;
     }
 
+    @Override
     public String toString()
     {
         return switch (orientation)
         {
-            case NORTH -> "^";
-            case EAST -> ">";
-            case SOUTH -> "v";
-            case WEST -> "<";
+            case NORTH -> "N";
+            case EAST -> "E";
+            case SOUTH -> "S";
+            case WEST -> "W";
             default -> "?";
         };
     }
 
-    public boolean isAt(Vector2d position)
-    {
-        return position.equals(position);
-    }
-
-    public Vector2d getPosition()
-    {
-        return position;
-    }
-
-    public Animal move(MoveDirection direction)
+    public void move(MoveDirection direction)
     {
         switch (direction)
         {
@@ -52,20 +32,38 @@ public class Animal
             case LEFT -> orientation = orientation.previous();
             case FORWARD, BACKWARD ->
             {
-                Vector2d newMove = orientation.toUnitVector();
+                Vector2d unitVector = orientation.toUnitVector();
                 if (direction == MoveDirection.BACKWARD)
                 {
-                    newMove = newMove.opposite();
+                    unitVector = unitVector.opposite();
                 }
-
-                Vector2d newPosition = position.add(newMove);
+                Vector2d newPosition = position.add(unitVector);
 
                 if (map.canMoveTo(newPosition))
                 {
-                    position = newPosition;
+                    Object objectAt = map.objectAt(newPosition);
+
+                    if (objectAt == null || objectAt instanceof Grass)
+                    {
+                        position = newPosition;
+                    }
+
+                    if (eatAttempt(objectAt))
+                    {
+                        ((GrassField) map).spawnGrass();
+                    }
                 }
             }
         }
-        return this;
+    }
+    private boolean eatAttempt(Object objectAt)
+    {
+        boolean output = false;
+        if (objectAt instanceof Grass)
+        {
+            map.mapElements.remove(objectAt);
+            output = true;
+        }
+        return output;
     }
 }

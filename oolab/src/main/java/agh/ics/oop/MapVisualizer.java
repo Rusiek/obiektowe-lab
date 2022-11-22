@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import javax.swing.*;
+
 /**
  * The map visualizer converts the {@link IWorldMap} map into a string
  * representation.
@@ -7,10 +9,10 @@ package agh.ics.oop;
  * @author apohllo
  */
 public class MapVisualizer {
-    private static final String EMPTY_CELL = " ";
+    private static final String EMPTY_CELL = "_";
     private static final String FRAME_SEGMENT = "-";
     private static final String CELL_SEGMENT = "|";
-    private IWorldMap map;
+    private final IWorldMap map;
 
     /**
      * Initializes the MapVisualizer with an instance of map to visualize.
@@ -90,9 +92,9 @@ public class MapVisualizer {
     private String drawObject(Vector2d currentPosition)
     {
         String result = null;
-        if (this.map.isOccupied(currentPosition))
+        if (map.isOccupied(currentPosition))
         {
-            Object object = this.map.objectAt(currentPosition);
+            Object object = map.objectAt(currentPosition);
             if (object != null)
             {
                 result = object.toString();
