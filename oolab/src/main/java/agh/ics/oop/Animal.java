@@ -1,14 +1,18 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
 public class Animal extends AbstractWorldMapElement
 {
     private MapDirection orientation = MapDirection.NORTH;
     private final AbstractWorldMap map;
+    private final List<IPositionChangeObserver> observers = new ArrayList<>();
 
     public Animal(AbstractWorldMap map, Vector2d initialPosition)
     {
         this.map = map;
         this.position = initialPosition;
+        this.addObserver(map);
     }
 
     @Override
@@ -43,27 +47,38 @@ public class Animal extends AbstractWorldMapElement
                 {
                     Object objectAt = map.objectAt(newPosition);
 
-                    if (objectAt == null || objectAt instanceof Grass)
+                    if (objectAt instanceof Grass)
                     {
+                        map.mapElements.remove(objectAt);
+                        positionChanged(position, newPosition);
                         position = newPosition;
+                        ((GrassField) map).newGrass();
                     }
-
-                    if (eatAttempt(objectAt))
+                    else if (objectAt == null)
                     {
-                        ((GrassField) map).spawnGrass();
+                        positionChanged(position, newPosition);
+                        position = newPosition;
                     }
                 }
             }
         }
     }
-    private boolean eatAttempt(Object objectAt)
+
+    private void addObserver(IPositionChangeObserver observer)
     {
-        boolean output = false;
-        if (objectAt instanceof Grass)
+        observers.add(observer);
+    }
+
+    private void removeObserver(IPositionChangeObserver observer)
+    {
+        observers.remove(observer);
+    }
+
+    private void positionChanged(Vector2d oldPosition, Vector2d newPosition)
+    {
+        for (IPositionChangeObserver observer : this.observers)
         {
-            map.mapElements.remove(objectAt);
-            output = true;
+            observer.positionChanged(oldPosition, newPosition);
         }
-        return output;
     }
 }

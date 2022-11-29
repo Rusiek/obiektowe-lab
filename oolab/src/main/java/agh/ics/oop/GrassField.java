@@ -21,36 +21,14 @@ public class GrassField extends AbstractWorldMap
 
         for (int i = 0; i < grassFieldsCount; i++)
         {
-            mapElements.add(new Grass(new Vector2d(new_x.get(i), new_y.get(i))));
+            newGrass();
         }
-    }
-
-    @Override
-    public AbstractWorldMapElement objectAt(Vector2d position)
-    {
-        AbstractWorldMapElement mapElementAt = null;
-        for (AbstractWorldMapElement mapElement: mapElements)
-        {
-            if (mapElement.getPosition().equals(position))
-            {
-                if (mapElement instanceof Animal)
-                {
-                    return mapElement;
-                }
-                else
-                {
-                    mapElementAt = mapElement;
-                }
-            }
-        }
-
-        return mapElementAt;
     }
 
     @Override
     public String toString()
     {
-        for (AbstractWorldMapElement mapElement: mapElements)
+        for (AbstractWorldMapElement mapElement: mapElements.values())
         {
             upperRight = upperRight.upperRight(mapElement.getPosition());
             lowerLeft = lowerLeft.lowerLeft(mapElement.getPosition());
@@ -59,7 +37,7 @@ public class GrassField extends AbstractWorldMap
         return super.toString();
     }
 
-    public void spawnGrass()
+    public void newGrass()
     {
         Vector2d position;
         do
@@ -69,6 +47,6 @@ public class GrassField extends AbstractWorldMap
             position = new Vector2d(x, y);
         } while(objectAt(position) == null);
 
-        mapElements.add(new Grass(position));
+        super.mapElements.put(position,  new Grass(position));
     }
 }
